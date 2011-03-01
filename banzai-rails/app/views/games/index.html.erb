@@ -1,0 +1,26 @@
+<div id="main">
+  <div style="margin:auto;">
+<h1>Listing available games</h1>
+<p style="color: green"><%= flash[:notice] %></p>
+<p style="color: red"><%= flash[:error] %></p>
+<table>
+  <tr>
+    <th>Starts at</th>
+    <th>Rounds</th>
+    <th>City</th>
+    <th># of players</th>
+  </tr>
+
+<% @games.each do |game| %>
+  <tr>
+    <td><%= game.starts_at.strftime("%a %b %d %Y %H:%m") %></td>
+    <td><%=h game.rounds %></td>
+    <td><%=h game.city %></td>
+    <td><%=h game.users.count %></td>
+    <td><%= link_to "Register for this game", register_game_path(game) %>
+    <td><%= link_to "Start playing", game_path(game) %>
+  </tr>
+<% end %>
+</table>
+</div>
+</div>

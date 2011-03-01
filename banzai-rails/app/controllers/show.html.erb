@@ -1,0 +1,109 @@
+<% content_for :head do %>
+
+<script type="text/javascript" src="/javascripts/ewm.js"></script>
+<!-- 2. Define the doOnLoad  function that will 
+initiate the map -->
+<script type="text/javascript">
+function doOnLoad() {
+  //Make sure mainMap var is null
+  mainMap = null;
+  mainLayer = null;
+  var callback = {
+    mapLoaded: function(map) {
+      mainMap = map;
+      mainLayer = mainMap.newLayer();
+      getPlayerRequest();
+      getPlayerRequest.periodical(30*1000); //refresh the positions every 30 seconds
+      mainMap.zoom(0.5);
+    }
+  };   
+
+  var params = {
+    mapContainer: document.getElementById("mapdiv"),
+    key: "qEK8sqqiWxXAkyTwdDdpEtjTJn1eVzSw2O6xNrU3",
+    name: "Global_2_Mercator",
+    callback: callback
+  };
+  //Initiate the map using the parameters defined above.
+  ericsson.WebMap.initiateCreation(params);
+}
+function getPlayerRequest(){
+  var jsonRequest = new Request.JSON({url: "http://banz.ai/games/<%= @game.id %>/players", onSuccess: function(playerlist){
+    mainLayer.addGeoObjects( loadPlayerSymbols(playerlist) );//new Array(testSymbol));
+  }}).get();
+}
+
+// param is game id
+function loadPlayerSymbols(playerlist) {
+  //fetch JSON list of player locations with their respective nicks
+  var players = new Array();
+  playerlist.each(function(player){
+    players.push(new ericsson.Symbol( player.login, 
+      player.longitude, 
+      player.latitude, 
+      "/images/small_ball.png", 
+      player.login, 
+      player.login + " is at lat: "+player.latitude+", long: "+player.longitude+"."));
+  });
+  return players;
+}
+</script>
+<% end %>
+
+<% content_for :body do %>
+onload="doOnLoad();"
+<% end %>
+
+<div id="main" style="width:950px;">
+  <div style="margin:auto;" class="explanation">
+    <div>
+      <%= link_to "Back to game listings", games_path %> or
+      <%= link_to "Log out", logout_path %>
+    </div>
+    <img onclick="mainMap.pan(-0.5,0);" style="cursor: pointer;"
+    width="50" src="/images/arrow_left.png" alt="Pan Left" 
+    title="Pan Left" border="0" />
+    <img onclick="mainMap.pan(0.5,0);" style="cursor: pointer;"
+    width="50" src="/images/arrow_right.png" alt="Pan Right"
+    title="Pan Right" border="0"/>
+    <img onclick="mainMap.pan(0,0.5);" style="cursor: pointer;"
+    width="50" src="/images/arrow_up.png" alt="Pan Up" 
+    title="Pan Up" border="0" />
+    <img onclick="mainMap.pan(0,-0.5);" style="cursor: pointer;"
+    width="50" src="/images/arrow_down.png" alt="Pan Down"
+    title="Pan Down" border="0" />
+    <img onclick="mainMap.zoom(0.5)" style="cursor: pointer;"
+    width="50" src="/images/plus.png" alt="Zoom In" 
+    title="Zoom in" border="0"/>
+    <img onclick="mainMap.zoom(2);" style="cursor: pointer;"
+    width="50" src="/images/minus.png" alt="Zoom Out" 
+    title="Zoom out" border="0" />
+
+
+    <div style="display:inline;margin-left:30px;margin-bottom: 20px;">
+      Score: <%= current_user.score_for(@game)%>pts
+    </div>
+    <div style="display:inline;margin-left:30px;margin-bottom: 20px;">
+      <% if current_user.chosen? %>
+      You are the chosen one, you will get constant score until you are caught.
+      <% else %>  
+      Distance to chosen one: <%= percentage_distance(current_user.distance_from(User.chosen_for_game(@game))) %>%
+      <% end %>
+    </div>
+    <br />
+    <div style="width: 800px; height: 450px;float:left;" id="mapdiv">
+    </div>
+
+    <div style="float:left;margin-left:30px;">
+      <h2>Players</h2>
+      <ul>
+        <% @game.users.each do |user| -%>
+        <li>
+          <%= user.login %>
+        </li>
+        <% end -%>
+      </ul>
+    </div>
+  </div>
+  <br style="clear:both;">
+</div>

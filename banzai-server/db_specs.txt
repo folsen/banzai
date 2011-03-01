@@ -1,0 +1,5 @@
+Database name: banzai
+
+CREATE TABLE users (id int, login VARCHAR(40), name VARCHAR(100), phonenumber VARCHAR(11), consent_status tinyint(1));
+INSERT INTO users VALUES (2,'Emore','Emanuel Ferm','46736893980',0);
+INSERT INTO users VALUES (2,'IQue','Fredrik Olsen','46701234567',0);

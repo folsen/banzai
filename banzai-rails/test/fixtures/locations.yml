@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  longitude: MyString
+  latitude: MyString
+  user_id: 1
+
+two:
+  longitude: MyString
+  latitude: MyString
+  user_id: 1

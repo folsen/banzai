@@ -1,0 +1,24 @@
+<h1>Editing game</h1>
+
+<% form_for([:admin, @game]) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :starts_at %><br />
+    <%= f.datetime_select :starts_at %>
+  </p>
+  <p>
+    <%= f.label :rounds %><br />
+    <%= f.text_field :rounds %>
+  </p>
+  <p>
+    <%= f.label :city %><br />
+    <%= f.text_field :city %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @game %> |
+<%= link_to 'Back', admin_games_path %>

@@ -1,0 +1,61 @@
+<div id="main">
+<div id="left_explanation" class="explanation" style="position:relative;">
+<% if !logged_in? %>
+<img src="/images/beta.png" alt="beta" width="150" style="position:absolute;left:466px" />
+<br /><br />
+<h1>Banzai – the social manhunt!</h1>   
+<br />
+  Have you ever wished you could play IRL tag with your friends – on <strong>dunebuggys</strong>? Of course you have!
+  From the Ericsson Labs coding challenge comes <span class="banzai">banzai</span>, a unique
+  new challenge where social engineering, dunebuggy skills and a clever mind will get you far.<br />
+  <div style="text-align:right;" class="highlighted-links">
+    <%= link_to "Sign up", signup_path %>
+    <%= link_to "Log in", login_path %>
+  </div>
+</div>
+<img src="/images/phone.png" style="float:right;" alt="Aino" />
+<div style="float:left;width:590px;margin-top:35px">
+  <p>
+  <span class="banzai" style="font-size:22px">banzai</span> is all about the fun of the chase. It was originally designed
+  as an urban tag-game played out in real life. Because of the accuracy of the Ericsson Labs Web Location API
+  we switched our market to people with access to large areas to play around in while using some kind of
+  motor vehicle, the urban city-based game might be revised when the Web Location uses GPS to a larger extent.
+  </p>
+  <p>
+    The game is about finding "the chosen one". The game is initiated at a given time and place, you
+    choose which games you want to participate in yourself. Once the game is started you will get the location
+    of everyone else. Completely at random, one player will be informed that he is the chosen one. 
+    It is then the goal of the chosen one to stay away from everyone else.
+  </p>
+  <h1>Points</h1>
+  <p>
+    Points will be given at three times.
+  </p>
+  <ul>
+    <li>
+      The chosen one will get points as long as he is not caught, the chosen one is deemed caught when
+      everyone else is within 200 meters of him.
+    </li>
+    <li style="margin-top:20px;">
+      The other players will get points when spending time close to the chosen one, the amount of points
+      they get will depend on how close they are to the chosen one. The proximity to the chosen one is displayed
+      for each player at all times with a bar diplaying 0 - 100% where 100% is within catching distance.
+    </li>
+    <li style="margin-top:20px;">
+      When the chosen one is caught, the round is over. At this point, everyone needs to get 500 meters
+      away from each other as fast as possible. The sooner you are 500 meters from everyone else, the more points you get.
+      When everyone is clear a new round will begin! The number of rounds is defined in the particular game you choose to join.
+    </li>
+  </ul>
+  When the designated number of rounds has been played, the one with the highest final score will win! So <%= link_to "sign up", signup_path %> or <%= link_to "log in", login_path %> and start playing!
+</div>
+
+<% else %>
+<h1>Welcome <%= current_user.login %>!</h1>
+<p>
+Go check out which <%= link_to "games", games_path %> are available! You can also <%= link_to "log out", logout_path %>.
+</p>
+<p style="color: green"><%= flash[:notice] %></p>
+<p style="color: red"><%= flash[:error] %></p>
+<% end %>
+</div>

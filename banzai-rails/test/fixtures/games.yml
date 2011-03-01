@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  starts_at: 2009-11-27 19:31:57
+  rounds: 1
+  city: MyString
+
+two:
+  starts_at: 2009-11-27 19:31:57
+  rounds: 1
+  city: MyString
